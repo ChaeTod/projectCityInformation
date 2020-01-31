@@ -119,7 +119,7 @@ public class Controller extends Application {
             String temp = String.valueOf(weather.getTemp());
             //String temp = Double.toString(weather.getTemp());
             String hum = String.valueOf(weather.getHumidity());
-            String vis = String.valueOf(weather.getLon());
+            String vis = String.valueOf(weather.getVisibility());
             tempLbl.setText("The temperature: " + temp + "°C");
             humidityLbl.setText("Humidity: " + hum + "%");
             visiblLbl.setText("Visibility: " + vis);

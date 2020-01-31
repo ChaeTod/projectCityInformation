@@ -48,6 +48,10 @@ public class Weather {
         return humidity;
     }
 
+    public double getVisibility() {
+        return visibility;
+    }
+
     public double getLon() {
         return lon;
     }
