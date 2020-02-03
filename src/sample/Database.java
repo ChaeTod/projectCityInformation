@@ -7,6 +7,8 @@ import java.util.List;
 public class Database {
 
     private final String SELECT_COUNTRY = "SELECT country.Code, country.Name FROM country";
+    private final String SELECT_CITYBYNAME = "SELECT city.Name, city.CountryCode, country.Code2, json_extract(Info, '$.Population') AS Info, country.Name FROM city JOIN country ON country.Code = city.CountryCode WHERE city.Name LIKE ?";
+    private final String SELECT_COUNTRYBYNAME = "SELECT city.Name, city.CountryCode, country.Code2, json_extract(Info, '$.Population') AS Info, country.Name FROM city JOIN country ON country.Code = city.CountryCode WHERE country.Name LIKE ?";
     private final String SELECT_CITY = "SELECT city.Name, city.CountryCode, country.Code2, json_extract(Info, '$.Population') AS Info, country.Name FROM city JOIN country ON country.Code = city.CountryCode WHERE country.Name LIKE ?";
     private final String SELECT_POPULATION = "SELECT json_extract(Info, '$.Population') AS Population, CountryCode " +
             "FROM city WHERE city.Name LIKE ?";
@@ -46,13 +48,67 @@ public class Database {
             }
         }
     */
-    public List getCities(String countryName) {
+    public List getCities(String cityName) {
         try {
-            System.out.println(countryName);
+            System.out.println(cityName);
             PreparedStatement ps = getConnection().prepareStatement(SELECT_CITY);
-            ps.setString(1, countryName);
+            ps.setString(1, cityName);
             List<City> list = new ArrayList<>();
             //List<String> list = new ArrayList<>();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("Name");
+                String code2 = rs.getString("city.CountryCode");
+                String code3 = rs.getString("country.Code2");
+                String country = rs.getString("country.Name");
+                int population = rs.getInt("Info");
+                City newCity = new City(name, population, code3, code2, country);
+                list.add(newCity);
+                //list.add(rs.getString("Name"));
+            }
+            ps.close();
+            rs.close();
+            return list;
+        } catch (
+                Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List getCityByName(String cityName) {
+        try {
+            System.out.println(cityName);
+            PreparedStatement ps = getConnection().prepareStatement(SELECT_CITYBYNAME);
+            ps.setString(1,  cityName);
+            List<City> list = new ArrayList<>();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("Name");
+                String code2 = rs.getString("city.CountryCode");
+                String code3 = rs.getString("country.Code2");
+                String country = rs.getString("country.Name");
+                int population = rs.getInt("Info");
+                City newCity = new City(name, population, code3, code2, country);
+                list.add(newCity);
+                //list.add(rs.getString("Name"));
+            }
+            ps.close();
+            rs.close();
+            return list;
+        } catch (
+                Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List getCountryByName(String cityName) {
+        try {
+            System.out.println(cityName);
+            PreparedStatement ps = getConnection().prepareStatement(SELECT_COUNTRYBYNAME);
+            ps.setString(1,  cityName);
+            List<City> list = new ArrayList<>();
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String name = rs.getString("Name");

@@ -39,7 +39,7 @@ public class APIWeather {
                 int humidity = json.getJSONObject("main").getInt("humidity");
                 String cityName = json.getString("name");
                 String countryCode = json.getJSONObject("sys").getString("country");
-                double visibility = json.getDouble("visibility");
+                double visibility = json.getDouble("visibility")/1000;
 
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
                 long unix = json.getJSONObject("sys").getLong("sunset");

@@ -5,8 +5,12 @@ import com.sun.javafx.application.HostServicesDelegate;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -16,6 +20,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import java.text.DecimalFormatSymbols;
+
 public class Controller extends Application {
     public ComboBox comboBox1;
     public Label cityLabel;
@@ -36,6 +41,10 @@ public class Controller extends Application {
     public Label coordLbl;
     public Button coordBtn;
     public Button infoBtn;
+    public Pane mainPane;
+    public GridPane mainGridPane;
+    public Button findBtn;
+    public TextField srchTxt;
     //public Hyperlink link;
     private List<City> cities; // create a list Cities
 
@@ -45,6 +54,7 @@ public class Controller extends Application {
     public Controller() throws SQLException, ClassNotFoundException {
         Database database = new Database();
         countries = database.getCountries();
+
     }
 
     @Override
@@ -92,8 +102,20 @@ public class Controller extends Application {
         }
     }
 
+    /* Not in use for a while
+    public double getSceneWeight(){
+       return mainPane.getWidth();
+    }
+
+    public double getSceneHeight(){
+       return mainPane.getHeight();
+    }
+     */
+
     public void showAllLabels(ActionEvent actionEvent) {
         okBtn.setDisable(false);
+        //mainPane.setPrefWidth(600);
+        //mainPane.setPrefHeight(460);
     }
 
     public void getAllInfo(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
@@ -122,10 +144,10 @@ public class Controller extends Application {
             String vis = String.valueOf(weather.getVisibility());
             tempLbl.setText("The temperature: " + temp + "°C");
             humidityLbl.setText("Humidity: " + hum + "%");
-            visiblLbl.setText("Visibility: " + vis);
+            visiblLbl.setText("Visibility: " + vis + "km");
             riseLbl.setText("Sunrise: " + weather.getSunRise());
             downLbl.setText("Sunset: " + weather.getSunSet());
-            coordLbl.setText("http://www.google.com/maps/place/" + weather.getLat() +","+weather.getLon());
+            coordLbl.setText("http://www.google.com/maps/place/" + weather.getLat() + "," + weather.getLon());
         } else {
             coordBtn.setDisable(true);
             tempLbl.setText("---");
@@ -191,10 +213,62 @@ public class Controller extends Application {
     public void getInfo(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("City Information");
-        alert.setHeaderText("                              Version: 0.7e3");
+        alert.setHeaderText("                              Version: 0.8p2");
         alert.setContentText("Choose the country and city and find out all info about it! Use button 'WEB' to open selected city on google maps.");
         //alert.setContentText("Version: 0.7e3");
 
         alert.showAndWait();
+    }
+
+    public void getInfoFromDB(ActionEvent actionEvent) {
+        String cityName = srchTxt.getText();
+        Database db = new Database(); // create a new object db with Database type
+        cities = db.getCityByName(cityName);
+        City city = null;
+        for (City s : cities) {
+            if (s.getName().equals(cityName)) {
+                city = s;
+                break;
+            }
+        }
+
+        if (city != null) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Result of the search");
+            alert.setHeaderText(null);
+            alert.setContentText("| "+city.getName() + " | " + city.getCountry() + " | Population:  " + city.getPopulation() + " | " + city.getCode2()+ " |");
+
+            alert.showAndWait();
+        } else {
+            cities = db.getCountryByName(cityName);
+            for (City s : cities){
+                if(s.getCountry().equals(cityName)){
+                    city = s;
+                    break;
+                }
+            }
+
+            if (city != null){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Result of the search");
+                alert.setHeaderText(null);
+                alert.setContentText("| "+city.getName() + " | " + city.getCountry() + " | Population:  " + city.getPopulation() + " | " + city.getCode2()+ " |");
+
+                alert.showAndWait();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Result of the search");
+                alert.setHeaderText(null);
+                alert.setContentText("The search couldn't find anything!");
+
+                alert.showAndWait();
+            }
+        }
+    }
+
+    public void isTxtEmp(ActionEvent actionEvent) {
+        if (srchTxt.getText() != null) {
+            findBtn.setDisable(false);
+        }
     }
 }
