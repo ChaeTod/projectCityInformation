@@ -39,31 +39,52 @@ public class APIWeather {
                 int humidity = json.getJSONObject("main").getInt("humidity");
                 String cityName = json.getString("name");
                 String countryCode = json.getJSONObject("sys").getString("country");
-                //double visibility = json.getDouble("visibility")/1000;
+                try {
+                    double visibility = json.getDouble("visibility") / 1000;
 
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                long unix = json.getJSONObject("sys").getLong("sunset");
-                long unix_1 = json.getJSONObject("sys").getLong("sunrise");
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                    long unix = json.getJSONObject("sys").getLong("sunset");
+                    long unix_1 = json.getJSONObject("sys").getLong("sunrise");
 
-                // Calculate the date from the json request. Warning! The time returns in microseconds!
-                Date now = new Date(unix*1000);
-                Date now_x = new Date(unix_1*1000);
-                String riseTime = sdf.format(now_x);
-                String setTime = sdf.format(now);
-                System.out.println(riseTime);
-                System.out.println(setTime);
+                    // Calculate the date from the json request. Warning! The time returns in microseconds!
+                    Date now = new Date(unix * 1000);
+                    Date now_x = new Date(unix_1 * 1000);
+                    String riseTime = sdf.format(now_x);
+                    String setTime = sdf.format(now);
+                    System.out.println(riseTime);
+                    System.out.println(setTime);
 
-                System.out.println("The main temp is: " + temp);
-                System.out.println("The main humidity is: " + humidity);
-                //System.out.println("The visibility is: " + visibility);
+                    System.out.println("The main temp is: " + temp);
+                    System.out.println("The main humidity is: " + humidity);
+                    System.out.println("The visibility is: " + visibility);
 
-                double lon = json.getJSONObject("coord").getDouble("lon");
-                double lat = json.getJSONObject("coord").getDouble("lat");
+                    double lon = json.getJSONObject("coord").getDouble("lon");
+                    double lat = json.getJSONObject("coord").getDouble("lat");
 
-                //return new Weather(cityName, countryCode, temp, humidity, visibility, 0, riseTime, setTime);
-                return new Weather(null, null, temp, humidity, 0, lon, lat, riseTime, setTime);
+                    //return new Weather(cityName, countryCode, temp, humidity, visibility, 0, riseTime, setTime);
+                    return new Weather(cityName, countryCode, temp, humidity, visibility, lon, lat, riseTime, setTime);
+                } catch (Exception e) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                    long unix = json.getJSONObject("sys").getLong("sunset");
+                    long unix_1 = json.getJSONObject("sys").getLong("sunrise");
 
-            }
+                    // Calculate the date from the json request. Warning! The time returns in microseconds!
+                    Date now = new Date(unix * 1000);
+                    Date now_x = new Date(unix_1 * 1000);
+                    String riseTime = sdf.format(now_x);
+                    String setTime = sdf.format(now);
+                    System.out.println(riseTime);
+                    System.out.println(setTime);
+
+                    System.out.println("The main temp is: " + temp);
+                    System.out.println("The main humidity is: " + humidity);
+
+                    double lon = json.getJSONObject("coord").getDouble("lon");
+                    double lat = json.getJSONObject("coord").getDouble("lat");
+
+                    return new Weather(cityName, countryCode, temp, humidity, 0, lon, lat, riseTime, setTime);
+                }
+            } else throw new NoSuchException("City " + city + " was not found in the database!");
         } catch (Exception e) {
             e.printStackTrace();
         }

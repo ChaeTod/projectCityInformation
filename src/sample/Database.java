@@ -8,7 +8,7 @@ public class Database {
 
     private final String SELECT_COUNTRY = "SELECT country.Code, country.Name FROM country";
     private final String SELECT_CITYBYNAME = "SELECT city.Name, city.CountryCode, country.Code2, json_extract(Info, '$.Population') AS Info, country.Name FROM city JOIN country ON country.Code = city.CountryCode WHERE city.Name LIKE ?";
-    private final String SELECT_COUNTRYBYNAME = "SELECT city.Name, city.CountryCode, country.Code2, json_extract(Info, '$.Population') AS Info, country.Name FROM city JOIN country ON country.Code = city.CountryCode WHERE country.Name LIKE ?";
+    //private final String SELECT_COUNTRYBYNAME = "SELECT city.Name, city.CountryCode, country.Code2, json_extract(Info, '$.Population') AS Info, country.Name FROM city JOIN country ON country.Code = city.CountryCode WHERE country.Name LIKE ?";
     private final String SELECT_CITY = "SELECT city.Name, city.CountryCode, country.Code2, json_extract(Info, '$.Population') AS Info, country.Name FROM city JOIN country ON country.Code = city.CountryCode WHERE country.Name LIKE ?";
     private final String SELECT_POPULATION = "SELECT json_extract(Info, '$.Population') AS Population, CountryCode " +
             "FROM city WHERE city.Name LIKE ?";

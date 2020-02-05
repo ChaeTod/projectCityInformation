@@ -77,6 +77,7 @@ public class Controller extends Application {
 
     public void selectCities(Event event) throws SQLException, ClassNotFoundException {
         String country = null;
+
         country = getComboBox1Value();  // get the value from the first comboBox
         if (country != null) {  //if the value from the first comboBox not null
             Database db = new Database(); // create a new object db with Database type
