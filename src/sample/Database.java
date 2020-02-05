@@ -102,7 +102,7 @@ public class Database {
         }
         return null;
     }
-
+/*
     public List getCountryByName(String cityName) {
         try {
             System.out.println(cityName);
@@ -129,7 +129,7 @@ public class Database {
         }
         return null;
     }
-
+*/
     public String getPopulation(String cityName){
         try {
             PreparedStatement ps = getConnection().prepareStatement(SELECT_POPULATION);

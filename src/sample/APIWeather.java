@@ -39,7 +39,7 @@ public class APIWeather {
                 int humidity = json.getJSONObject("main").getInt("humidity");
                 String cityName = json.getString("name");
                 String countryCode = json.getJSONObject("sys").getString("country");
-                double visibility = json.getDouble("visibility")/1000;
+                //double visibility = json.getDouble("visibility")/1000;
 
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
                 long unix = json.getJSONObject("sys").getLong("sunset");
@@ -55,13 +55,13 @@ public class APIWeather {
 
                 System.out.println("The main temp is: " + temp);
                 System.out.println("The main humidity is: " + humidity);
-                System.out.println("The visibility is: " + visibility);
+                //System.out.println("The visibility is: " + visibility);
 
                 double lon = json.getJSONObject("coord").getDouble("lon");
                 double lat = json.getJSONObject("coord").getDouble("lat");
 
                 //return new Weather(cityName, countryCode, temp, humidity, visibility, 0, riseTime, setTime);
-                return new Weather(null, null, temp, humidity, visibility, lon, lat, riseTime, setTime);
+                return new Weather(null, null, temp, humidity, 0, lon, lat, riseTime, setTime);
 
             }
         } catch (Exception e) {

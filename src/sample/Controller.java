@@ -240,7 +240,7 @@ public class Controller extends Application {
 
             alert.showAndWait();
         } else {
-            cities = db.getCountryByName(cityName);
+            cities = db.getCities(cityName);
             for (City s : cities){
                 if(s.getCountry().equals(cityName)){
                     city = s;
